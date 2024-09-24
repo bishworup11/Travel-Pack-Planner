@@ -1,13 +1,23 @@
 import './App.css';
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Footer from './components/Footer';
 import Form from './components/Form';
 import HeaderPart from './components/HeaderPart';
 import PackingList from './components/PackingList';
 
 function App() {
-  const [items,setItems] = useState([{ id: 1, description: "Passports", quantity: 2, packed: false },
-    { id: 2, description: "Socks", quantity: 12, packed: false },]);
+  
+
+  const [items, setItems] = useState(() => {
+    const savedItems = localStorage.getItem("packingListItems");
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
+
+   // Save the updated items list to localStorage whenever 'items' state changes
+
+  useEffect(() => {
+    localStorage.setItem("packingListItems", JSON.stringify(items));
+  }, [items]);
 
     //it adds a new item to the list
     function addItem(item){
